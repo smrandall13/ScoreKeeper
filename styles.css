@@ -10,6 +10,7 @@
 
      --accent-primary: #00c853; /* Emerald Green */
      --accent-secondary: #ff2929; /* Bright Red */
+     --accent-highlight: #669178; /* Bright Green */
 
      --content-header-back: #1e2838;
      --content-header-text: #eaeaea;
@@ -29,10 +30,12 @@
      --border-radius: 4px;
      --border: 1px solid #00a878;
 
-     --table-back: white;
-     --table-text: #000;
-     --table-header-back: #121c2d;
+     /* --table-back: rgb(35, 35, 35); */
+     --table-back: rgba(35, 35, 35,0.02);
+     --table-text: #ffffff;
+     --table-header-back: #1a273f;
      --table-header-text: #fff;
+     --table-border: 1px solid #2c3e50;
 
      --input-back: #1e2a3a;
      --input-text: #fff;
@@ -43,12 +46,25 @@
      --button-border: 1px solid #2c3e50;
      --border-dull: 1px solid #2c3e50;
 
+     --scroll-track: #2c3e50;
+     --scroll-thumb: #00c853; 
 }
 
 * {
      margin:0;
      padding:0;
      box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+     width:8px;margin-left:4px;
+}
+::-webkit-scrollbar-thumb {
+     background: var(--scroll-thumb);
+     border-radius: var(--border-radius);     
+}
+::-webkit-scrollbar-track {
+     background: var(--scroll-track);
 }
 
 body {
@@ -118,13 +134,13 @@ input:focus, select:focus, textarea:focus, input:active, select:active, textarea
      background: var(--accent-secondary);
      border: var(--button-border);
 }
-
+.button-control {width:80px;display:inline-flex;flex-direction:row;align-items:center;justify-content:center;}
 table {
      width: 100%;
      border-collapse: collapse;
-     /* margin-top: 8px; */
      background: var(--table-back);
      color: var(--table-text);
+     border: var(--table-border);
 }
 table thead {
      background: var(--table-header-back);
@@ -132,7 +148,7 @@ table thead {
 }
 th,
 td {
-     border: var(--border);
+     border: var(--table-border);
      padding: 8px;
      text-align: center;
 }
@@ -199,6 +215,10 @@ th {
 }
 .overflow {
      overflow-y:auto;     
+}
+.highlight {
+     background: var(--accent-highlight);
+     /* color: #fff; */
 }
 
 .bordered {

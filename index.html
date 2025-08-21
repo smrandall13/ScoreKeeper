@@ -8,15 +8,17 @@
      <body>
           <h1>ScoreKeeper</h1>
 
-          <div class="header" style="text-align:center;width:auto;margin:auto;display:inline-flex;flex-direction:row;align-items:center;justify-content:center;">
-               <!-- <h2>KPIs</h2>
-               <p id="totalMatches">Total Matches: 0</p>
-               <p id="topPlayer">Top Player: -</p> -->
-               <div onclick="openForm()" class="button">Add Match</div>
+          <div class="flex-row" style="justify-content:space-between;width:100%;">
+               <div onclick="openForm()" class="button button-control">Add </div>
+               <div class="flex-row">
+                    <div onclick="exportData()" class="button button-control">Export</div>
+                    <input type="file" id="importFile" accept=".json" style="display:none;">
+                    <div onclick="importFile()" class="button button-control">Import</div>
+               </div>
           </div>
 
           <div class="container">
-               <h2>Matchups</h2>
+               <h2>Scorecard</h2>
                <div id="matchups"></div>
           </div>
 
