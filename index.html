@@ -8,24 +8,24 @@
      <body>
           <h1>ScoreKeeper</h1>
 
-          <div class="summary">
+          <div class="header" style="text-align:center;width:auto;margin:auto;display:inline-flex;flex-direction:row;align-items:center;justify-content:center;">
                <!-- <h2>KPIs</h2>
                <p id="totalMatches">Total Matches: 0</p>
                <p id="topPlayer">Top Player: -</p> -->
-               <button onclick="openForm()">Add Match</button>
+               <div onclick="openForm()" class="button">Add Match</div>
           </div>
 
-          <div class="summary">
+          <div class="container">
                <h2>Matchups</h2>
                <div id="matchups"></div>
           </div>
 
-          <div class="summary hide">
+          <div class="container hide">
                <h2>Charts</h2>
                <canvas id="gameChart" width="600" height="300"></canvas>
           </div>
 
-          <div class="matches">
+          <div class="container">
                <h2>Match History</h2>
                <div id="matchTable"></div>
           </div>

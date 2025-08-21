@@ -116,7 +116,7 @@ function renderMatchHistory() {
 
      for (let game in gameGroups) {
           let btn = document.createElement("button");
-          btn.className = "collapsible";
+          btn.className = "content-header";
           btn.textContent = game;
           container.appendChild(btn);
 
@@ -140,7 +140,7 @@ function renderMatchHistory() {
         <td>${m.points.join(", ")}</td>
         <td>${m.pointsWon}</td>
         <td>${m.notes}</td>
-        <td><button onclick="openForm(${index})">Edit</button></td>
+        <td><button class='button' onclick="openForm(${index})">Edit</button></td>
       </tr>`;
           });
 
@@ -165,7 +165,7 @@ function renderMatchups() {
 
      for (let game in gameGroups) {
           let btn = document.createElement("button");
-          btn.className = "collapsible";
+          btn.className = "content-header";
           btn.textContent = game;
           container.appendChild(btn);
 
@@ -224,7 +224,7 @@ function renderMatchups() {
 }
 
 function setupCollapsibles() {
-     document.querySelectorAll(".collapsible").forEach((btn) => {
+     document.querySelectorAll(".content-header").forEach((btn) => {
           btn.onclick = function () {
                this.classList.toggle("active");
                let content = this.nextElementSibling;

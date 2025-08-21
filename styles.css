@@ -1,53 +1,193 @@
+/* ================================
+   LinkIt Theme Adjustments Only
+   ================================ */
 
-    body { font-family: Arial, sans-serif; margin: 0; background:#f4f4f4; }
-    h1 { text-align: center; padding: 20px; }
+:root {
+     --bg-color: #0f141d; /* Dark Blue */
 
-    .summary, .matches { background:#fff; padding:15px; margin:20px; border-radius:8px; }
-    table { width:100%; border-collapse: collapse; margin-top:10px; }
-    th, td { border:1px solid #ddd; padding:8px; text-align:center; }
-    th { background:#eee; }
+     --text-color: #eaeaea; /* Light Gray */
+     --text-highlight: #ffffff;
 
-    /* Popup Overlay */
-    .overlay {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: none; align-items: center; justify-content: center;
-    }
-    .form {
-      background:#fff; padding:20px; border-radius:8px;
-      width: 400px; max-height: 90vh; overflow:auto;
-    }
-    .form label { display:block; margin-top:8px; }
-    .form input, .form select, .form textarea { width:100%; padding:6px; margin-top:3px; }
-    .form button { margin-top:12px; padding:8px 12px; cursor:pointer; }
-    .close-btn { background:#c33; color:#fff; float:right; border:none; border-radius:4px; }
+     --accent-primary: #00c853; /* Emerald Green */
+     --accent-secondary: #2979ff; /* Bright Blue */
 
-    .collapsible {
-  background:#36a2eb;
-  color:#fff;
-  cursor:pointer;
-  padding:10px;
-  width:100%;
-  border:none;
-  text-align:left;
-  outline:none;
-  font-size:16px;
-  border-radius:5px;
-  margin-top:10px;
+     --content-header-back: #1e2838;
+     --content-header-text: #eaeaea;
+     --content-header-border: 1px solid #00a878;
+
+     --content-back: #121c2d;
+     --content-border: 1px solid #00a878;
+     --content-text: #eaeaea;
+
+     /* Entity Colors */
+     --entity-person: #4caf50; /* Green */
+     --entity-friend: #00acc1; /* Cyan */
+     --entity-animal: #ffb300; /* Amber */
+     --entity-building: #8e24aa; /* Purple */
+     --entity-other: #f44336; /* Red */
+
+     --border-radius: 4px;
+     --border: 1px solid #00a878;
+
+     --table-back: white;
+     --table-text: #000;
+     --table-header-back: #121c2d;
+     --table-header-text: #fff;
 }
-.active, .collapsible:hover {
-  background:#1f77d0;
+
+* {
+     margin:0;
+     padding:0;
+     box-sizing: border-box;
+}
+
+body {
+     font-family: Arial, sans-serif;
+     margin: 0;
+     display: flex;
+     padding: 20px;
+     flex-direction: column;
+     align-items: center;
+     justify-content: start;
+     flex-wrap: wrap;
+     background: var(--bg-color);
+     color: var(--text-color);
+     gap:8px;
+}
+h1 {
+     text-align: center;
+     padding: 20px;
+     margin:0;
+}
+h2 {
+     text-align: left;
+     padding: 8px 0px;margin:0;
+}
+
+.container {
+     background: var(--content-color);
+     color: var(--text-color);
+     border: var(--border);
+     padding: 12px;
+     border-radius: var(--border-radius);
+     display: flex;
+     flex-direction: column;
+     gap:8px;
+     flex-grow: 1;
+     width: 100%;
+}
+.button {
+     background: var(--accent-primary);
+     color: #fff;
+     padding: 4px 8px;
+     border-radius: var(--border-radius);
+     border: var(--border);
+     cursor:pointer;
+}
+
+table {
+     width: 100%;
+     border-collapse: collapse;
+     /* margin-top: 8px; */
+     background: var(--table-back);
+     color: var(--table-text);
+}
+table thead {
+     background: var(--table-header-back);
+     color: var(--table-header-text);
+}
+th,
+td {
+     border: var(--border);
+     padding: 8px;
+     text-align: center;
+}
+th {
+     background: var(--table-header-back);
+     color: var(--table-header-text);
+}
+
+/* Popup Overlay */
+.overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background: rgba(0, 0, 0, 0.5);
+     display: none;
+     align-items: center;
+     justify-content: center;
+}
+.form {
+     background: #fff;
+     padding: 20px;
+     border-radius: var(--border-radius);
+     width: 400px;
+     max-height: 90vh;
+     overflow: auto;
+}
+.form label {
+     display: block;
+     margin-top: 8px;
+}
+.form input,
+.form select,
+.form textarea {
+     width: 100%;
+     padding: 6px;
+     margin-top: 4px;
+}
+.form button {
+     margin-top: 12px;
+     padding: 8px 12px;
+     cursor: pointer;
+}
+.close-btn {
+     background: #c33;
+     color: #fff;
+     float: right;
+     border: none;
+     border-radius: var(--border-radius);
+}
+
+.content-header {
+     background: var(--content-header-back);
+     border: var(--content-header-border);
+     color: var(--content-header-text);
+     border-radius: var(--border-radius);
+     cursor: pointer;
+     padding: 8px;
+     width: 100%;
+     text-align: left;
+     outline: none;
+     font-size: 16px;
+     margin-top: 4px;
+}
+.content-header.active {
+     border-bottom-right-radius: 0;
+     border-bottom-left-radius: 0;
+     border-bottom:0;
 }
 .content {
-  padding:10px;
-  display:none;
-  overflow:hidden;
-  background:#fff;
-  border:1px solid #ddd;
-  border-radius:5px;
-  margin-bottom:10px;
+     padding: 10px;
+     display: none;
+     overflow: hidden;
+     background: var(--content-back);
+     border: var(--content-border);
+     color: var(--content-text);
+     border-radius: var(--border-radius);
+     margin-bottom: 10px;
+     border-top-right-radius: 0;
+     border-top-left-radius: 0;
 }
 .hide {
-     display:none;visibility: hidden;width:0;height:0;position:absolute;max-width:0;max-height:0;overflow:hidden;
+     display: none;
+     visibility: hidden;
+     width: 0;
+     height: 0;
+     position: absolute;
+     max-width: 0;
+     max-height: 0;
+     overflow: hidden;
 }
