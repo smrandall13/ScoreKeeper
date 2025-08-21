@@ -9,7 +9,7 @@
      --text-highlight: #ffffff;
 
      --accent-primary: #00c853; /* Emerald Green */
-     --accent-secondary: #2979ff; /* Bright Blue */
+     --accent-secondary: #ff2929; /* Bright Red */
 
      --content-header-back: #1e2838;
      --content-header-text: #eaeaea;
@@ -33,6 +33,16 @@
      --table-text: #000;
      --table-header-back: #121c2d;
      --table-header-text: #fff;
+
+     --input-back: #1e2a3a;
+     --input-text: #fff;
+     --input-border: 1px solid #2c3e50;
+     --input-height: 30px;
+     --input-border-active: 1px solid #ffc700;
+
+     --button-border: 1px solid #2c3e50;
+     --border-dull: 1px solid #2c3e50;
+
 }
 
 * {
@@ -64,6 +74,26 @@ h2 {
      padding: 8px 0px;margin:0;
 }
 
+label {
+     display:block;
+     margin: 12px 0 2px 0;
+     color:var(--input-text);
+}
+input,select,textarea {
+     background:var(--input-back);
+     color:var(--input-text);
+     border:var(--input-border);
+     padding: 2px 4px;
+     border-radius:var(--border-radius);
+     min-height:var(--input-height);
+     width:100%;
+     outline:none;
+}
+input:focus, select:focus, textarea:focus, input:active, select:active, textarea:active {
+     outline: none;
+     border: var(--input-border-active);
+}
+
 .container {
      background: var(--content-color);
      color: var(--text-color);
@@ -81,8 +111,12 @@ h2 {
      color: #fff;
      padding: 4px 8px;
      border-radius: var(--border-radius);
-     border: var(--border);
+     border: var(--button-border);
      cursor:pointer;
+}
+.button-bad {
+     background: var(--accent-secondary);
+     border: var(--button-border);
 }
 
 table {
@@ -120,28 +154,38 @@ th {
      justify-content: center;
 }
 .form {
-     background: #fff;
-     padding: 20px;
+     background: var(--content-back);
+     color:var(--content-color);
+     border:var(--content-border);
      border-radius: var(--border-radius);
+     padding: 12px;
      width: 400px;
      max-height: 90vh;
      overflow: auto;
 }
-.form label {
-     display: block;
-     margin-top: 8px;
-}
-.form input,
-.form select,
-.form textarea {
+.form input, .form select, .form textarea {
      width: 100%;
-     padding: 6px;
-     margin-top: 4px;
+     margin-bottom: 4px;
+     padding: 8px;
+     border: var(--input-border);
+     border-radius: var(--border-radius);
+     background: var(--input-back);
+     color: var(--input-text);
 }
 .form button {
      margin-top: 12px;
      padding: 8px 12px;
      cursor: pointer;
+}
+.form .player {
+     max-width:calc(100% - 80px);
+     width:calc(100% - 80px);
+     min-width: calc(100% - 80px);
+}
+.form .point {
+     max-width: 70px;
+     width: 70px;
+     min-width: 70px;
 }
 .close-btn {
      background: #c33;
@@ -149,6 +193,19 @@ th {
      float: right;
      border: none;
      border-radius: var(--border-radius);
+}
+.flex-row {
+     display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:4px;padding-right:4px;
+}
+.overflow {
+     overflow-y:auto;     
+}
+
+.bordered {
+     border: var(--border-dull);
+}
+.padded {
+     padding:4px;
 }
 
 .content-header {
