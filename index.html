@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+     <head>
+          <meta charset="UTF-8" />
+          <title>Competition Tracker</title>
+          <link rel="stylesheet" href="styles.css" />
+     </head>
+     <body>
+          <h1>Competition Tracker</h1>
+
+          <div class="summary">
+               <!-- <h2>KPIs</h2>
+               <p id="totalMatches">Total Matches: 0</p>
+               <p id="topPlayer">Top Player: -</p> -->
+               <button onclick="openForm()">Add Match</button>
+          </div>
+
+          <div class="summary">
+               <h2>Matchups</h2>
+               <div id="matchups"></div>
+          </div>
+
+          <div class="summary hide">
+               <h2>Charts</h2>
+               <canvas id="gameChart" width="600" height="300"></canvas>
+          </div>
+
+          <div class="matches">
+               <h2>Match History</h2>
+               <div id="matchTable"></div>
+          </div>
+
+          <!-- Popup Form -->
+          <div class="overlay" id="overlay">
+               <div class="form">
+                    <button class="close-btn" onclick="closeForm()">X</button>
+                    <h2 id="formTitle">Add Match</h2>
+
+                    <label>Game</label>
+                    <input id="game" list="gamesList" required />
+                    <datalist id="gamesList"></datalist>
+
+                    <label>Players</label>
+                    <div id="playerInputs">
+                         <input type="text" class="player" placeholder="Player 1 (required)" required />
+                         <input type="text" class="player" placeholder="Player 2 (required)" required />
+                         <input type="text" class="player" placeholder="Player 3" />
+                         <input type="text" class="player" placeholder="Player 4" />
+                         <input type="text" class="player" placeholder="Player 5" />
+                         <input type="text" class="player" placeholder="Player 6" />
+                         <input type="text" class="player" placeholder="Player 7" />
+                         <input type="text" class="player" placeholder="Player 8" />
+                    </div>
+
+                    <label>Winner</label>
+                    <select id="winner"></select>
+
+                    <label>Points per Player (comma separated)</label>
+                    <input id="points" type="text" placeholder="e.g., 5,3,7" />
+
+                    <label>Points Won By</label>
+                    <input id="pointsWon" type="number" />
+
+                    <label>Date</label>
+                    <input id="date" type="date" />
+
+                    <label>Notes</label>
+                    <textarea id="notes"></textarea>
+
+                    <button onclick="saveMatch()">Save Match</button>
+               </div>
+          </div>
+
+          <script src="script.js"></script>
+     </body>
+</html>
