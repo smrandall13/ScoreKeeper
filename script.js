@@ -26,7 +26,7 @@ function openForm(index = null) {
           document.getElementById("pointsWon").value = m.pointsWon;
           document.getElementById("date").value = m.date;
           document.getElementById("notes").value = m.notes;
-     }else{
+     } else {
           document.getElementById("date").value = new Date().toISOString().split("T")[0];
           // Fill Game with last game played
           const lastGame = matches[matches.length - 1]?.game || "";
@@ -35,7 +35,6 @@ function openForm(index = null) {
           // Auto Fill Player first with the winner from the last game
           const lastWinner = matches[matches.length - 1]?.winner || "";
           document.getElementById("winner").value = lastWinner;
-
      }
 }
 
@@ -231,6 +230,7 @@ function renderMatchups() {
      });
 
      for (let game in gameGroups) {
+          // Create collapsible header for each game
           let btn = document.createElement("button");
           btn.className = "content-header";
           btn.textContent = game;
@@ -306,7 +306,7 @@ function exportData() {
      const url = URL.createObjectURL(blob);
 
      // Create Date and time String but remove symbols and spaces
-     const dateStr = new Date().toISOString().replace(/[:.]/g, "").replace(/[-"]/g,"").replace("T","").replace("Z","").slice(0, 14);
+     const dateStr = new Date().toISOString().replace(/[:.]/g, "").replace(/[-"]/g, "").replace("T", "").replace("Z", "").slice(0, 14);
 
      const a = document.createElement("a");
      a.href = url;
@@ -316,12 +316,11 @@ function exportData() {
      URL.revokeObjectURL(url);
 }
 
-function importFile(){
+function importFile() {
      document.getElementById("importFile").click();
 }
 
 function importData(event) {
-
      if (!event || !event.target || !event.target.files || !event.target.files[0]) return;
 
      const file = event.target.files[0];
@@ -348,12 +347,56 @@ function importData(event) {
      reader.readAsText(file);
 }
 
+function updateLatestSummary() {
+     let container = document.getElementById("summary");
+     container.innerHTML = "";
+
+     if (matches.length === 0) return;
+
+     let content = document.createElement("div");
+     // content.className = "content";
+
+     // Get latest match by date
+     let latest = matches.reduce((a, b) => (new Date(a.date) > new Date(b.date) ? a : b));
+
+     // Calculate standings for this game
+     let gameMatches = matches.filter((m) => m.game === latest.game && latest.date == m.date);
+     let winCounts = {};
+     let playerlist = [];
+     gameMatches.forEach((m) => {
+          playerlist = [...playerlist,...m.players];
+          winCounts[m.winner] = (winCounts[m.winner] || 0) + 1;
+     });
+
+     // Remove Duplicate Players from playerlist
+     playerlist = [...new Set(playerlist)];
+
+     let leader = Object.entries(winCounts).sort((a, b) => b[1] - a[1])[0];
+
+     let totalGames = gameMatches.length;
+     let percent = ((leader[1] / totalGames) * 100).toFixed(0);
+
+     console.log("L",latest);
+
+     let html = `<table border="1" cellspacing="0" cellpadding="5">
+          <tr><th>Game</th><th>Date</th><th>Players</th><th>Leader</th><th>Wins</th></tr>
+          <tbody>
+               <tr><td>${latest.game}</td><td>${latest.date}</td><td>${playerlist.join(", ")}</td><td>${leader[0]}</td><td>${leader[1]+" ( "+percent+"% )"}</td></tr>
+          </tbody>
+     </table>`;
+     content.innerHTML = html;
+     container.appendChild(content);
+}
+
 function render() {
      updateLists();
      drawChart();
      renderMatchHistory();
      renderMatchups();
      highlightMatchups();
+
+     // Call this after adding a match or importing data
+     updateLatestSummary();
 }
 
 function drawChart() {
