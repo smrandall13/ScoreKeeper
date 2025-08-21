@@ -156,7 +156,23 @@ td {
 th {
      background: var(--table-header-back);
      color: var(--table-header-text);
+}.summary-table {
+  width: 100%;
+  margin: 10px 0 20px;
+  border-collapse: collapse;
+  background: #1E1E1E;
 }
+.summary-table th, .summary-table td {
+  border: 1px solid #2A2A2A;
+  padding: 6px 10px;
+  text-align: center;
+  color: #E0E0E0;
+}
+.summary-table th {
+  background: #00C853;
+  color: #fff;
+}
+
 
 /* Popup Overlay */
 .overlay {

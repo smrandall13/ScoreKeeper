@@ -222,6 +222,9 @@ function renderMatchups() {
      let container = document.getElementById("matchups");
      container.innerHTML = "";
 
+     let groupbyType = document.getElementById("matchuptype").value;
+     if (!groupbyType || groupbyType == "") groupbyType = "gameonly";
+
      // Group matches by game
      let gameGroups = {};
      matches.forEach((m) => {
@@ -230,7 +233,7 @@ function renderMatchups() {
      });
 
      for (let game in gameGroups) {
-          // Create collapsible header for each game
+          // Collapsible header for each game
           let btn = document.createElement("button");
           btn.className = "content-header";
           btn.textContent = game;
@@ -239,52 +242,98 @@ function renderMatchups() {
           let content = document.createElement("div");
           content.className = "content";
 
-          let group = gameGroups[game];
-          let allPlayers = new Set();
-          group.forEach((m) => m.players.forEach((p) => allPlayers.add(p)));
-          allPlayers = Array.from(allPlayers);
+          function processGroup(group,firstField,firstValue){
+               // Collect players
+               let allPlayers = new Set();
+               group.forEach((m) => m.players.forEach((p) => allPlayers.add(p)));
+               allPlayers = Array.from(allPlayers);
 
-          // Matrix init
-          let matrix = {};
-          allPlayers.forEach((p1) => {
-               matrix[p1] = {};
-               allPlayers.forEach((p2) => (matrix[p1][p2] = 0));
-          });
-
-          // Fill matrix
-          group.forEach((m) => {
-               m.losers.forEach((loser) => {
-                    matrix[m.winner][loser]++;
+               // Matrix init
+               let matrix = {};
+               allPlayers.forEach((p1) => {
+                    matrix[p1] = {};
+                    allPlayers.forEach((p2) => (matrix[p1][p2] = 0));
                });
-          });
 
-          // Totals
-          let totals = {};
-          allPlayers.forEach((p) => {
-               totals[p] = group.filter((m) => m.winner === p).length;
-          });
-
-          // Build table
-          let html = `<table border="1" cellspacing="0" cellpadding="5">
-          <tr><th>Player</th>`;
-          allPlayers.forEach((p) => (html += `<th>${p}</th>`));
-          html += `<th>Total Wins</th></tr>`;
-
-          allPlayers.forEach((p1) => {
-               html += `<tr><td><strong>${p1}</strong></td>`;
-               allPlayers.forEach((p2) => {
-                    if (p1 === p2) {
-                         html += `<td >-</td>`; //style="background:#eee"
-                    } else {
-                         html += `<td>${matrix[p1][p2]}</td>`;
-                    }
+               // Fill matrix
+               group.forEach((m) => {
+                    m.losers.forEach((loser) => {
+                         matrix[m.winner][loser]++;
+                    });
                });
-               html += `<td><strong>${totals[p1]}</strong></td></tr>`;
-          });
 
-          html += `</table>`;
-          content.innerHTML = html;
-          container.appendChild(content);
+               // Totals
+               let totals = {};
+               allPlayers.forEach((p) => (totals[p] = group.filter((m) => m.winner === p).length));
+
+               let groupLabel = ``;
+
+               let tableStyle = "";
+               if (firstField === "Date") {
+                    groupLabel = `<h2>Date: ${firstValue}</h2>`;
+                    tableStyle = " style='margin-bottom:16px;'";
+               }
+
+               // Build date header + matchup table
+               let html = `<table border="1" cellspacing="0" cellpadding="5" ${tableStyle}>
+                <tr><th>Player</th>`;
+               allPlayers.forEach((p) => (html += `<th>${p}</th>`));
+               html += `<th>Total Wins</th></tr>`;
+
+               allPlayers.forEach((p1) => {
+                    html += `<tr><td><strong>${p1}</strong></td>`;
+                    allPlayers.forEach((p2) => {
+                         if (p1 === p2) {
+                              html += `<td>-</td>`;
+                         } else {
+                              html += `<td>${matrix[p1][p2]}</td>`;
+                         }
+                    });
+                    html += `<td><strong>${totals[p1]}</strong></td></tr>`;
+               });
+
+               html += `</table>`;
+
+               // Build summary table
+               let wins = {};
+               group.forEach((m) => (wins[m.winner] = (wins[m.winner] || 0) + 1));
+               let leader = Object.entries(wins).sort((a, b) => b[1] - a[1])[0];
+               let loser = Object.entries(wins).sort((a, b) => a[1] - b[1])[0];
+               let totalGames = group.length;
+               let percent = ((leader[1] / totalGames) * 100).toFixed(1);
+                         
+               let summary = `<table border="1" cellspacing="0" cellpadding="5" style='margin-bottom:4px;'>
+                    <tr><th>Players</th><th>Leader</th><th>Wins</th></tr>
+                    <tbody>
+                         <tr><td>${allPlayers.join(", ")}</td><td>${leader[0]}</td><td>${leader[1] + " ( " + percent + "% )"}</td></tr>
+                    </tbody>
+               </table>`;
+
+               let block = document.createElement("div");
+               block.innerHTML = groupLabel+summary+html;
+               content.appendChild(block);
+               container.appendChild(content);
+          }
+
+          // Group this game's matches by date
+          if (groupbyType == "gamedate"){
+               let dateGroups = {};
+               gameGroups[game].forEach((m) => {
+                    if (!dateGroups[m.date]) dateGroups[m.date] = [];
+                    dateGroups[m.date].push(m);
+               });
+
+               // Sort by latest date first
+               let sortedDates = Object.keys(dateGroups).sort((a, b) => new Date(b) - new Date(a));
+
+               sortedDates.forEach((date) => {
+                    processGroup(dateGroups[date],"Date",date);
+               });
+          }else{
+               // Process all matches for this game as one group
+               processGroup(gameGroups[game]);
+          }
+
      }
 
      setupCollapsibles();
@@ -364,7 +413,7 @@ function updateLatestSummary() {
      let winCounts = {};
      let playerlist = [];
      gameMatches.forEach((m) => {
-          playerlist = [...playerlist,...m.players];
+          playerlist = [...playerlist, ...m.players];
           winCounts[m.winner] = (winCounts[m.winner] || 0) + 1;
      });
 
@@ -376,12 +425,10 @@ function updateLatestSummary() {
      let totalGames = gameMatches.length;
      let percent = ((leader[1] / totalGames) * 100).toFixed(0);
 
-     console.log("L",latest);
-
      let html = `<table border="1" cellspacing="0" cellpadding="5">
           <tr><th>Game</th><th>Date</th><th>Players</th><th>Leader</th><th>Wins</th></tr>
           <tbody>
-               <tr><td>${latest.game}</td><td>${latest.date}</td><td>${playerlist.join(", ")}</td><td>${leader[0]}</td><td>${leader[1]+" ( "+percent+"% )"}</td></tr>
+               <tr><td>${latest.game}</td><td>${latest.date}</td><td>${playerlist.join(", ")}</td><td>${leader[0]}</td><td>${leader[1] + " ( " + percent + "% )"}</td></tr>
           </tbody>
      </table>`;
      content.innerHTML = html;
@@ -437,5 +484,8 @@ function drawChart() {
 
 document.getElementById("playerInputs").addEventListener("input", updateWinnerOptions);
 document.getElementById("importFile").addEventListener("change", (event) => importData(event));
+document.getElementById("matchuptype").addEventListener("change", renderMatchups);
+
+
 
 render();
